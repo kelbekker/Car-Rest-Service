@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:~/test
+    username: sa
+    password: 1234
+
+    hikari:
+      maximum-pool-size: 10
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-g2bshtebdqqu1qbv.us.auth0.com/
+          audiences: http://api-identifier
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+
+auth0:
+  audience: https://quickstarts/api

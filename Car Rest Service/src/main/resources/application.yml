@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/car
+    username: postgres
+    password: 1234
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-g2bshtebdqqu1qbv.us.auth0.com/
+          audiences: http://api-identifier
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+app:
+  initialize-db: false
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+auth0:
+  audience: https://quickstarts/api

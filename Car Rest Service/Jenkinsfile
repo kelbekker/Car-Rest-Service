@@ -1,0 +1,51 @@
+pipeline {
+    agent { docker { image 'maven:3.9.5-eclipse-temurin-17-alpine' } }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    sh 'git clone https://git.foxminded.ua/foxstudent104026/car-rest-service.git'
+                }
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Code Check') {
+            steps {
+                sh 'checkstyle -c checkstyle.xml src'
+
+                withSonarQubeEnv('Your_SonarQube_Server') {
+                    sh 'sonar-scanner'
+                }
+            }
+        }
+
+        stage('build') {
+            steps {
+                sh 'mvn --version'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                // Build the Docker image
+                script {
+                    def dockerImage = docker.build('myorg/myapp', '-f Dockerfile .')
+                    dockerImage.push()
+                }
+            }
+        }
+
+        stage('Build and Launch') {
+            steps {
+                sh 'docker-compose -f docker-compose.yml up -d'
+            }
+        }
+    }
+}
